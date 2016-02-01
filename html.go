@@ -68,7 +68,7 @@ func generateHTML(name string, c compress, t *template.Template) template.HTML {
 				return scripts
 			}
 
-			scripts := fmt.Sprintf("<script>/* Beego Compress Powered */</script>\n\t")
+			scripts := ""
 
 			filePath := filepath.Join(c.DistPath, group.DistFile)
 			if info, err := os.Stat(filePath); err == nil {
@@ -93,8 +93,6 @@ func generateHTML(name string, c compress, t *template.Template) template.HTML {
 		} else {
 			scripts := make([]string, 0, len(group.SourceFiles)+2)
 
-			scripts = append(scripts, fmt.Sprintf("<script>/* Beego Compress group `%s` begin */</script>", name))
-
 			for _, file := range group.SourceFiles {
 				filePath := filepath.Join(c.SrcPath, file)
 
@@ -112,8 +110,6 @@ func generateHTML(name string, c compress, t *template.Template) template.HTML {
 					scripts = append(scripts, errHtml("load file `%s` for path `%s` error: %s", file, filePath, err.Error()))
 				}
 			}
-
-			scripts = append(scripts, fmt.Sprintf("<script>/* end */</script>"))
 
 			return template.HTML(strings.Join(scripts, "\n\t"))
 		}
